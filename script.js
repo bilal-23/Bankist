@@ -175,6 +175,28 @@ btnTransfer.addEventListener('click', function (e) {
 
 });
 
+//TAKE LOAN
+btnLoan.addEventListener('click', function (e) {
+    e.preventDefault();
+    const amount = Number(inputLoanAmount.value);
+
+    if (amount > 0 && currentAccount.movements.some(a => a > 0.1 * amount)) {
+        currentAccount.movements.push(amount);
+        updateUI(currentAccount);
+    } else if (amount == 0) {
+        alert("Amount cannot be 0");
+    }
+    else {
+        alert("You are not elgible to take loan for this much amount")
+    }
+    inputLoanAmount.value = "";
+    inputLoanAmount.blur();
+})
+
+
+
+
+
 //DELETE ACCOUNT
 btnClose.addEventListener('click', function (e) {
     e.preventDefault();
