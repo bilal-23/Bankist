@@ -84,9 +84,12 @@ createUsername(accounts);
 
 
 //DISPLAY  MOVEMENTS
-function displayMovement(movements) {
+function displayMovement(movements, sort = false) {
     containerMovements.textContent = "";
-    movements.forEach(function (mov, i) {
+
+    //sorting movs
+    const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+    movs.forEach(function (mov, i) {
         const type = mov > 0 ? 'deposit' : 'withdrawal';
         const html = `
         <div class="movements__row">
@@ -123,6 +126,24 @@ function calcDisplaySummary(acc) {
     const interest = acc.movements.filter(mov => mov > 0).map(deposit => (deposit * acc.interestRate) / 100).filter(x => x >= 1).reduce((int, cur) => { return int + cur }, 0).toFixed(2);
     labelSumInterest.textContent = `${interest}€`;
 }
+
+//SORT MOVEMENTS
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+    e.preventDefault();
+    displayMovement(currentAccount.movements, !sorted);
+    sorted = !sorted;
+});
+//     const acc = currentAccount.movements;
+//     if (!sort) {
+//         acc.sort((a, b) => a - b);
+//         sort = true;
+//     } else if (sort) {
+//         acc.sort((a, b) => b - a);
+//         sort = false;
+//     }
+//     updateUI(currentAccount)
+// })
 
 function updateUI(acc) {
     //Display MOVEMENTS
@@ -215,9 +236,6 @@ btnClose.addEventListener('click', function (e) {
 /////////////////////////////////////////////
 ////////////////////////////////////////////////
 //////////////////////////////////////////////
-const deposits = account1.movements.filter(value => value > 0);
-const withdrawals = account1.movements.filter(value => value < 0);
-const balance = account2.movements.reduce((acc, value) => {
-    return (acc < value) ? acc = value : acc;
-});
+
+// console.log(accounts.map(acc => acc.movements).flat().reduce((acc, cur) => acc + cur))
 // console.log(deposits, withdrawals, balance);
